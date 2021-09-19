@@ -4,11 +4,17 @@ import Auth from "routes/Auth";
 import Home from "routes/Home";
 import Profile from "routes/Profile";
 import Navigation from "components/Navigation";
+import { Container, Grid } from "@material-ui/core";
+import { Box } from "@mui/system";
 
 const AppRouter = ({ isLoggedIn }) => {
   return (
     <Router>
-      {isLoggedIn && <Navigation />}
+      {isLoggedIn && (
+        <Box>
+          <Navigation />
+        </Box>
+      )}
       <Switch>
         {isLoggedIn ? (
           <>
