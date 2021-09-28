@@ -1,29 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  query,
+  getDocs,
+  orderBy,
+} from "firebase/firestore";
 import { dbService } from "fbase";
+import Nweet from "components/Nweet";
+import { Button, Container } from "@material-ui/core";
+import { Box } from "@mui/system";
+import { TextField, Grid } from "@mui/material";
 
-const Home = () => {
+const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
-  const getNweets = async () => {
-    const dbNweets = await getDocs(collection(dbService, "nweets"));
-    dbNweets.forEach((document) => {
-      const nweetObject = {
-        ...document.data(),
-        id: document.id,
-      };
-      setNweets((prev) => [nweetObject, ...prev]);
-    });
-  };
+
   useEffect(() => {
-    getNweets();
+    onSnapshot(
+      query(collection(dbService, "nweets"), orderBy("createdAt", "desc")),
+      (snapshot) => {
+        const nweetArray = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setNweets(nweetArray);
+      }
+    );
   }, []);
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
       const docRef = await addDoc(collection(dbService, "nweets"), {
-        nweet,
+        text: nweet,
         createdAt: Date.now(),
+        creatorId: userObj.uid,
       });
       console.log("Document written with ID: ", docRef.id);
     } catch (error) {
@@ -34,27 +46,49 @@ const Home = () => {
   const onChange = ({ target: { value } }) => {
     setNweet(value);
   };
-  console.log(nweets);
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <input
+    <>
+      <Box component="form" onSubmit={onSubmit}>
+        <TextField
           value={nweet}
+          label="nweet"
+          multiline
+          rows={4}
+          placeholder="무슨일이야?"
           onChange={onChange}
-          type="text"
-          placeholder="무슨 생각 하니??"
           maxLength={120}
+          fullWidth
+          inputProps={{
+            maxLength: 10,
+          }}
+          required
         />
-        <input type="submit" value="Nweet" />
-      </form>
-      <div>
+        <Grid
+          py="1"
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="flex-end"
+          item
+          sx={{ my: 2 }}
+        >
+          <Button type="submit" variant="contained" color="primary">
+            Nweet
+          </Button>
+        </Grid>
+      </Box>
+      <>
         {nweets.map((nweet) => (
-          <div key={nweet.id}>
-            <h4>{nweet.nweet}</h4>
-          </div>
+          <Box minHeight="50px">
+            <Nweet
+              key={nweet.id}
+              nweetObj={nweet}
+              isOwner={nweet.creatorId === userObj.uid}
+            />
+          </Box>
         ))}
-      </div>
-    </div>
+      </>
+    </>
   );
 };
 export default Home;

@@ -56,14 +56,14 @@ const Auth = () => {
   };
   const toggleAccount = () => setNewAccount((prev) => !prev);
 
-  const onSocialClick = (name) => {
+  const onSocialClick = async (name) => {
     let provider;
     if (name === "google") {
       provider = new GoogleAuthProvider();
     } else if (name === "github") {
       provider = new GithubAuthProvider();
     }
-    const data = signInWithPopup(authService, provider);
+    const data = await signInWithPopup(authService, provider);
     console.log(data);
   };
   return (

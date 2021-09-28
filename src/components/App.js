@@ -1,32 +1,28 @@
 import React, { useState, useEffect } from "react";
 import AppRouter from "components/Router";
 import { authService } from "fbase";
-import {
-  CircularProgress,
-  Container,
-  Grid,
-  Typography,
-} from "@material-ui/core";
+import { CircularProgress, Container, Grid } from "@material-ui/core";
 import { Box } from "@mui/system";
 
 function App() {
   const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userObj, setUserObj] = useState(null);
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
+        setUserObj(user);
       }
       setInit(true);
     });
   }, []);
   return (
     <Container>
-      <Box sx={{ height: "80vh", minHeight: "550px", mt: 8, padding: 3 }}>
+      <Box sx={{ height: "100vh", minHeight: "550px" }}>
         {init ? (
-          <AppRouter isLoggedIn={isLoggedIn} />
+          <Box sx={{ mt: 12 }}>
+            <AppRouter isLoggedIn={Boolean(userObj)} userObj={userObj} />
+          </Box>
         ) : (
           <Grid
             container
@@ -37,12 +33,20 @@ function App() {
             style={{ minHeight: "100vh" }}
           >
             <Grid item xs={3}>
-              <CircularProgress></CircularProgress>
+              <CircularProgress size={80}></CircularProgress>
             </Grid>
           </Grid>
         )}
       </Box>
-      <Box sx={{ bgcolor: "skyblue", py: 1, px: 1 }}>
+      {/* <Box
+        sx={{
+          height: "10%",
+          bgcolor: "#e9f3fd",
+          py: 1,
+          px: 1,
+          borderRadius: "15px",
+        }}
+      >
         <Grid
           container
           direction="row"
@@ -50,10 +54,12 @@ function App() {
           justify="flex-start"
         >
           <Grid item>
-            <Typography>&copy; {new Date().getFullYear()} Nwitter</Typography>
+            <Box sx={{ fontWeight: "light" }}>
+              &copy; {new Date().getFullYear()} Nwitter
+            </Box>
           </Grid>
         </Grid>
-      </Box>
+      </Box> */}
     </Container>
   );
 }

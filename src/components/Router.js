@@ -4,10 +4,16 @@ import Auth from "routes/Auth";
 import Home from "routes/Home";
 import Profile from "routes/Profile";
 import Navigation from "components/Navigation";
-import { Container, Grid } from "@material-ui/core";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  Container,
+  Grid,
+} from "@material-ui/core";
 import { Box } from "@mui/system";
+import HomeIcon from "@mui/icons-material/Home";
 
-const AppRouter = ({ isLoggedIn }) => {
+const AppRouter = ({ isLoggedIn, userObj }) => {
   return (
     <Router>
       {isLoggedIn && (
@@ -19,7 +25,7 @@ const AppRouter = ({ isLoggedIn }) => {
         {isLoggedIn ? (
           <>
             <Route exact path="/">
-              <Home />
+              <Home userObj={userObj} />
             </Route>
             <Route exact path="/profile">
               <Profile />
