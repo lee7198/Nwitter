@@ -32,7 +32,7 @@ function App() {
             justify="center"
             style={{ minHeight: "100vh" }}
           >
-            <Grid item xs={3}>
+            <Grid item xs={6}>
               <CircularProgress size={80}></CircularProgress>
             </Grid>
           </Grid>
