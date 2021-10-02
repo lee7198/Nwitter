@@ -8,12 +8,15 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { dbService, storageService } from "fbase";
-import { ref, uploadString } from "@firebase/storage";
+import { ref, uploadString, getDownloadURL } from "@firebase/storage";
+import * as firebase from "firebase/app";
 import { v4 as uuidv4 } from "uuid";
 import Nweet from "components/Nweet";
-import { Button, Container } from "@material-ui/core";
+import { Button, Container, IconButton } from "@material-ui/core";
 import { Box } from "@mui/system";
 import { TextField, Grid } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { AddPhotoAlternate } from "@mui/icons-material";
 
 const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
@@ -34,21 +37,34 @@ const Home = ({ userObj }) => {
   }, []);
   const onSubmit = async (e) => {
     e.preventDefault();
-    const fileRef = ref(storageService, `${userObj.uid}/${uuidv4()}`);
-    const response = await uploadString(fileRef, attachment, "data_url");
-    console.log(response);
+    let attachmentUrl = "";
+    //첨부파일 없을 때
+    if (attachment !== "") {
+      const attachmentRef = ref(storageService, `${userObj.uid}/${uuidv4()}`);
+      const response = await uploadString(
+        attachmentRef,
+        attachment,
+        "data_url"
+      );
+      // console.log("response: ", response.ref);
+      // console.log(await getDownloadURL(ref(response)));
+      attachmentUrl = await getDownloadURL(response.ref);
+    }
+    const nweetObj = {
+      text: nweet,
+      createdAt: Date.now(),
+      creatorId: userObj.uid,
+      attachmentUrl,
+    };
 
-    // try {
-    //   const docRef = await addDoc(collection(dbService, "nweets"), {
-    //     text: nweet,
-    //     createdAt: Date.now(),
-    //     creatorId: userObj.uid,
-    //   });
-    //   console.log("Document written with ID: ", docRef.id);
-    // } catch (error) {
-    //   console.error("Error adding document: ", error);
-    // }
-    // setNweet("");
+    try {
+      const docRef = await addDoc(collection(dbService, "nweets"), nweetObj);
+      console.log("Document written with ID: ", docRef.id);
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
+    setNweet("");
+    setAttachment("");
   };
   const onChange = ({ target: { value } }) => {
     setNweet(value);
@@ -74,7 +90,7 @@ const Home = ({ userObj }) => {
       <Box component="form" onSubmit={onSubmit}>
         <TextField
           value={nweet}
-          label="nweet"
+          label="nweet 쓰기"
           multiline
           rows={4}
           placeholder="무슨일이야?"
@@ -89,24 +105,56 @@ const Home = ({ userObj }) => {
           py="1"
           container
           direction="row"
-          justifyContent="flex-end"
+          justifyContent="space-between"
           alignItems="flex-end"
           item
           sx={{ my: 2 }}
         >
-          <div>
-            <img src={attachment} width="50px" height="50px" />
-            <button onClick={onClearAttachment}>Clear</button>
+          <div style={{ height: "60px" }}>
+            {attachment ? (
+              <>
+                <img
+                  src={
+                    attachment
+                      ? attachment
+                      : "https://firebasestorage.googleapis.com/v0/b/nwitter-a4d3b.appspot.com/o/default_image.png?alt=media&token=d33ee8b0-a5ed-4876-9fbc-65282d55f00b"
+                  }
+                  width="60px"
+                  height="60px"
+                  style={{ backgroundColor: "#ddd", borderRadius: "4px" }}
+                />
+                <IconButton
+                  onClick={onClearAttachment}
+                  size="small"
+                  style={{
+                    position: "absolute",
+                    transform: "translate(-17px, -12px)",
+                    backgroundColor: "#fbfbfb",
+                    boxShadow: "1px 2px 4px #00000054",
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </>
+            ) : (
+              <Button
+                variant="contained"
+                component="label"
+                style={{ width: "60px", height: "60px" }}
+              >
+                <AddPhotoAlternate
+                  fontSize="large"
+                  // style={{ color: "white" }}
+                />
+                <input
+                  accept="image/*"
+                  type="file"
+                  onChange={onFileChange}
+                  hidden
+                />
+              </Button>
+            )}
           </div>
-          <Button variant="contained" component="label">
-            Upload File
-            <input
-              accept="image/*"
-              type="file"
-              onChange={onFileChange}
-              hidden
-            />
-          </Button>
           <Button type="submit" variant="contained" color="primary">
             Nweet
           </Button>

@@ -1,7 +1,12 @@
 import {
   Button,
+  CardContent,
+  CardMedia,
   Container,
   Grid,
+  IconButton,
+  Menu,
+  MenuItem,
   Modal,
   Paper,
   TextField,
@@ -9,21 +14,27 @@ import {
 } from "@material-ui/core";
 import { ButtonUnstyled } from "@mui/core";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Stack } from "@mui/material";
+import { Card, CardHeader, Stack } from "@mui/material";
 import { Box } from "@mui/system";
 import { dbService } from "fbase";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { deleteObject, ref } from "@firebase/storage";
+import { storageService } from "../fbase";
 
 const Nweet = ({ nweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false);
   const [newNweet, setNewNweet] = useState(nweetObj.text);
+  const [NweetModify, setNweetModify] = useState(null);
 
   const onDeleteClick = async () => {
+    setNweetModify(null);
     const ok = window.confirm("이 Nweet을 삭제 할건가요?");
     console.log(ok);
     if (ok) {
       await deleteDoc(doc(dbService, `nweets/${nweetObj.id}`), {});
+      await deleteObject(ref(storageService, nweetObj.attachmentUrl));
     }
   };
   const toggleEditing = () => setEditing((prev) => !prev);
@@ -43,8 +54,19 @@ const Nweet = ({ nweetObj, isOwner }) => {
   };
 
   const [ModalOpen, ModalSetOpen] = React.useState(false);
-  const ModalHandleOpen = () => ModalSetOpen(true);
+  const ModalHandleOpen = () => {
+    ModalSetOpen(true);
+    setNweetModify(null);
+  };
   const ModalHandleClose = () => ModalSetOpen(false);
+
+  const ModifyOpener = Boolean(NweetModify);
+  const ModifyOpen = (event) => {
+    setNweetModify(event.currentTarget);
+  };
+  const ModifyClose = () => {
+    setNweetModify(null);
+  };
 
   return (
     <div key={nweetObj.id}>
@@ -59,16 +81,6 @@ const Nweet = ({ nweetObj, isOwner }) => {
                 transform: "translate(-50%, -50%)",
               }}
             >
-              {/* <form onSubmit={onSubmit}>
-                <input
-                  type="text"
-                  placeholder="Nweet 수정"
-                  value={newNweet}
-                  onChange={onChange}
-                  required
-                />
-                <input type="submit" value="수정" />
-              </form> */}
               <Paper>
                 <Container>
                   <Stack
@@ -87,7 +99,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
                       value={newNweet}
                       onChange={onChange}
                       placeholder="Nweet 수정"
-                      label="Nweet"
+                      label="Nweet 수정"
                       multiline
                       rows={4}
                       inputProps={{
@@ -115,21 +127,56 @@ const Nweet = ({ nweetObj, isOwner }) => {
           </Modal>
         )}
       </>
-      <>
-        <h4>{nweetObj.text}</h4>
-        {isOwner && (
-          <Stack direction="row" justifyContent="flex-end" spacing={2}>
-            {/* <button onClick={onDeleteClick}>Delete</button> */}
-            <Button color="secondary" variant="text" onClick={onDeleteClick}>
-              삭제
-            </Button>
-            {/* <button onClick={toggleEditing}>Edit</button> */}
-            <Button variant="contained" onClick={ModalHandleOpen}>
-              수정
-            </Button>
-          </Stack>
+      <Card variant="outlined" sx={{ my: 4 }}>
+        <CardHeader
+          // avatar={nweetObj.id}
+          action={
+            <>
+              {isOwner && (
+                <>
+                  <IconButton
+                    size="small"
+                    aria-controls="basic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={ModifyOpener ? "true" : undefined}
+                    onClick={ModifyOpen}
+                  >
+                    <MoreHorizIcon fontSize="small" />
+                  </IconButton>
+                  <Menu
+                    anchorEl={NweetModify}
+                    open={ModifyOpener}
+                    onClose={ModifyClose}
+                  >
+                    <MenuItem onClick={ModalHandleOpen}>수정</MenuItem>
+                    <MenuItem onClick={onDeleteClick}>삭제</MenuItem>
+                  </Menu>
+                </>
+              )}
+            </>
+          }
+          title={nweetObj.id}
+          titleTypographyProps={{
+            fontSize: "17px",
+          }}
+          subheader="September 14, 2016"
+          subheaderTypographyProps={{
+            fontSize: "13px",
+          }}
+        />
+        {nweetObj.attachmentUrl && (
+          // <img src={} width="50px" height="50px" />
+          <CardMedia
+            component="img"
+            // height="256"
+            height="256"
+            image={nweetObj.attachmentUrl}
+          />
         )}
-      </>
+        <CardContent>
+          <Typography>{nweetObj.text}</Typography>
+        </CardContent>
+      </Card>
     </div>
   );
 };
