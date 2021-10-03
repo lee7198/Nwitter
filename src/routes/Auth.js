@@ -178,6 +178,7 @@ const Auth = () => {
               onClick={() => {
                 onSocialClick("github");
               }}
+              style={{ backgroundColor: "#222", color: "#fff" }}
             >
               Github 계정으로 시작
             </Button>

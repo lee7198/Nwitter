@@ -13,12 +13,12 @@ import {
 import { Box } from "@mui/system";
 import HomeIcon from "@mui/icons-material/Home";
 
-const AppRouter = ({ isLoggedIn, userObj }) => {
+const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
   return (
     <Router>
       {isLoggedIn && (
         <Box>
-          <Navigation />
+          <Navigation userObj={userObj} />
         </Box>
       )}
       <Switch>
@@ -28,7 +28,7 @@ const AppRouter = ({ isLoggedIn, userObj }) => {
               <Home userObj={userObj} />
             </Route>
             <Route exact path="/profile">
-              <Profile />
+              <Profile userObj={userObj} refreshUser={refreshUser} />
             </Route>
           </>
         ) : (

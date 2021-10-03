@@ -1,13 +1,18 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import { Box } from "@mui/system";
-import { Container, IconButton, Typography } from "@material-ui/core";
+import {
+  Avatar,
+  Button,
+  Container,
+  IconButton,
+  Typography,
+} from "@material-ui/core";
 import Grid from "@mui/material/Grid";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-const Navigation = () => (
+const Navigation = ({ userObj }) => (
   <Box sx={{ flexGrow: 1 }}>
     <AppBar position="fixed">
       <Container>
@@ -17,13 +22,54 @@ const Navigation = () => (
           justifyContent="space-between"
           alignItems="center"
         >
-          <IconButton color="inherit" aria-label="home" href="/">
-            <HomeRoundedIcon />
-          </IconButton>
-          <Typography>NWITTER</Typography>
-          <IconButton color="inherit" aria-label="profile" href="/#/profile">
-            <AccountCircleIcon />
-          </IconButton>
+          <Grid item xs>
+            <IconButton color="inherit" aria-label="home" href="/">
+              <HomeRoundedIcon />
+            </IconButton>
+          </Grid>
+          <Grid item xs={6} justifyContent="center">
+            <Typography style={{ textAlign: "center" }}>NWITTER</Typography>
+          </Grid>
+          <Grid item xs>
+            <Box>
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center"
+              >
+                <Button
+                  href="/#/profile"
+                  variant="text"
+                  style={{ color: "#fff" }}
+                  endIcon={
+                    userObj.photoURL ? (
+                      <img
+                        src={userObj.photoURL}
+                        // width="1em"
+                        // height="1em"
+                        style={{
+                          width: "1em",
+                          height: "1em",
+                          fontSize: "1.5em",
+                          borderRadius: "50%",
+                        }}
+                      />
+                    ) : (
+                      // <AccountCircleIcon />
+                      <AccountCircleIcon />
+                    )
+                  }
+                >
+                  {userObj.displayName
+                    ? userObj.displayName.length <= 6
+                      ? userObj.displayName
+                      : userObj.displayName.substring(0, 6) + "..."
+                    : "User"}
+                </Button>
+              </Grid>
+            </Box>
+          </Grid>
         </Grid>
       </Container>
     </AppBar>

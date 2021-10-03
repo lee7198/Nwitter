@@ -3,7 +3,6 @@ import {
   CardContent,
   CardMedia,
   Container,
-  Grid,
   IconButton,
   Menu,
   MenuItem,
@@ -12,10 +11,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import { ButtonUnstyled } from "@mui/core";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { Card, CardHeader, Stack } from "@mui/material";
-import { Box } from "@mui/system";
 import { dbService } from "fbase";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
@@ -24,6 +20,7 @@ import { deleteObject, ref } from "@firebase/storage";
 import { storageService } from "../fbase";
 
 const Nweet = ({ nweetObj, isOwner }) => {
+  console.log(nweetObj);
   const [editing, setEditing] = useState(false);
   const [newNweet, setNewNweet] = useState(nweetObj.text);
   const [NweetModify, setNweetModify] = useState(null);
@@ -34,7 +31,9 @@ const Nweet = ({ nweetObj, isOwner }) => {
     console.log(ok);
     if (ok) {
       await deleteDoc(doc(dbService, `nweets/${nweetObj.id}`), {});
-      await deleteObject(ref(storageService, nweetObj.attachmentUrl));
+      if (nweetObj.attachmentUrl) {
+        await deleteObject(ref(storageService, nweetObj.attachmentUrl));
+      }
     }
   };
   const toggleEditing = () => setEditing((prev) => !prev);
@@ -155,11 +154,11 @@ const Nweet = ({ nweetObj, isOwner }) => {
               )}
             </>
           }
-          title={nweetObj.id}
+          title={nweetObj.creatorId}
           titleTypographyProps={{
             fontSize: "17px",
           }}
-          subheader="September 14, 2016"
+          subheader={nweetObj.createdAt}
           subheaderTypographyProps={{
             fontSize: "13px",
           }}

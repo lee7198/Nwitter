@@ -21,7 +21,7 @@ import { AddPhotoAlternate } from "@mui/icons-material";
 const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
-  const [attachment, setAttachment] = useState();
+  const [attachment, setAttachment] = useState("");
 
   useEffect(() => {
     onSnapshot(
@@ -84,7 +84,7 @@ const Home = ({ userObj }) => {
     };
     reader.readAsDataURL(theFile);
   };
-  const onClearAttachment = () => setAttachment(null);
+  const onClearAttachment = () => setAttachment("");
   return (
     <>
       <Box component="form" onSubmit={onSubmit}>
@@ -108,9 +108,16 @@ const Home = ({ userObj }) => {
           justifyContent="space-between"
           alignItems="flex-end"
           item
-          sx={{ my: 2 }}
+          sx={{
+            my: 2,
+          }}
         >
-          <div style={{ height: "60px" }}>
+          <div
+            style={{
+              height: "60px",
+            }}
+          >
+            {" "}
             {attachment ? (
               <>
                 <img
@@ -121,8 +128,11 @@ const Home = ({ userObj }) => {
                   }
                   width="60px"
                   height="60px"
-                  style={{ backgroundColor: "#ddd", borderRadius: "4px" }}
-                />
+                  style={{
+                    backgroundColor: "#ddd",
+                    borderRadius: "4px",
+                  }}
+                />{" "}
                 <IconButton
                   onClick={onClearAttachment}
                   size="small"
@@ -134,13 +144,16 @@ const Home = ({ userObj }) => {
                   }}
                 >
                   <CloseIcon />
-                </IconButton>
+                </IconButton>{" "}
               </>
             ) : (
               <Button
                 variant="contained"
                 component="label"
-                style={{ width: "60px", height: "60px" }}
+                style={{
+                  width: "60px",
+                  height: "60px",
+                }}
               >
                 <AddPhotoAlternate
                   fontSize="large"
@@ -153,24 +166,25 @@ const Home = ({ userObj }) => {
                   hidden
                 />
               </Button>
-            )}
-          </div>
+            )}{" "}
+          </div>{" "}
           <Button type="submit" variant="contained" color="primary">
-            Nweet
-          </Button>
-        </Grid>
-      </Box>
+            Nweet{" "}
+          </Button>{" "}
+        </Grid>{" "}
+      </Box>{" "}
       <>
+        {" "}
         {nweets.map((nweet) => (
           <Box minHeight="50px">
             <Nweet
               key={nweet.id}
               nweetObj={nweet}
               isOwner={nweet.creatorId === userObj.uid}
-            />
+            />{" "}
           </Box>
-        ))}
-      </>
+        ))}{" "}
+      </>{" "}
     </>
   );
 };
