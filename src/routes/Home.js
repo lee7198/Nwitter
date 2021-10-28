@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 import Nweet from "components/Nweet";
 import { Button, Container, IconButton } from "@material-ui/core";
 import { Box } from "@mui/system";
-import { TextField, Grid } from "@mui/material";
+import { TextField, Grid, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { AddPhotoAlternate } from "@mui/icons-material";
 
@@ -54,12 +54,14 @@ const Home = ({ userObj }) => {
       text: nweet,
       createdAt: Date.now(),
       creatorId: userObj.uid,
+      Nickname: userObj.displayName,
       attachmentUrl,
     };
 
     try {
       const docRef = await addDoc(collection(dbService, "nweets"), nweetObj);
       console.log("Document written with ID: ", docRef.id);
+      SnackHandleClick();
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -85,6 +87,38 @@ const Home = ({ userObj }) => {
     reader.readAsDataURL(theFile);
   };
   const onClearAttachment = () => setAttachment("");
+
+  // 스낵바
+  const [open, setOpenSnack] = React.useState(false);
+  const [snackPack, setSnackPack] = React.useState([]);
+
+  const SnackHandleClick = () => {
+    setOpenSnack(true);
+  };
+
+  const SnackHandleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnack(false);
+  };
+  const action = (
+    <React.Fragment>
+      {/* <Button color="secondary" size="small" onClick={SnackHandleClose}>
+        UNDO
+      </Button> */}
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={SnackHandleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
+
   return (
     <>
       <Box component="form" onSubmit={onSubmit}>
@@ -117,7 +151,6 @@ const Home = ({ userObj }) => {
               height: "60px",
             }}
           >
-            {" "}
             {attachment ? (
               <>
                 <img
@@ -132,7 +165,7 @@ const Home = ({ userObj }) => {
                     backgroundColor: "#ddd",
                     borderRadius: "4px",
                   }}
-                />{" "}
+                />
                 <IconButton
                   onClick={onClearAttachment}
                   size="small"
@@ -144,7 +177,7 @@ const Home = ({ userObj }) => {
                   }}
                 >
                   <CloseIcon />
-                </IconButton>{" "}
+                </IconButton>
               </>
             ) : (
               <Button
@@ -166,25 +199,31 @@ const Home = ({ userObj }) => {
                   hidden
                 />
               </Button>
-            )}{" "}
-          </div>{" "}
+            )}
+          </div>
           <Button type="submit" variant="contained" color="primary">
-            Nweet{" "}
-          </Button>{" "}
-        </Grid>{" "}
-      </Box>{" "}
+            Nweet
+          </Button>
+        </Grid>
+      </Box>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={SnackHandleClose}
+        message="👍 성공적으로 작성되었습니다."
+        action={action}
+      />
       <>
-        {" "}
         {nweets.map((nweet) => (
           <Box minHeight="50px">
             <Nweet
               key={nweet.id}
               nweetObj={nweet}
               isOwner={nweet.creatorId === userObj.uid}
-            />{" "}
+            />
           </Box>
-        ))}{" "}
-      </>{" "}
+        ))}
+      </>
     </>
   );
 };

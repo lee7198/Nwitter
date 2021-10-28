@@ -4,14 +4,7 @@ import Auth from "routes/Auth";
 import Home from "routes/Home";
 import Profile from "routes/Profile";
 import Navigation from "components/Navigation";
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-  Container,
-  Grid,
-} from "@material-ui/core";
 import { Box } from "@mui/system";
-import HomeIcon from "@mui/icons-material/Home";
 
 const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
   return (

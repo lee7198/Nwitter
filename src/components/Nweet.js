@@ -18,23 +18,30 @@ import React, { useState } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { deleteObject, ref } from "@firebase/storage";
 import { storageService } from "../fbase";
+import { useConfirm } from "material-ui-confirm";
 
 const Nweet = ({ nweetObj, isOwner }) => {
-  console.log(nweetObj);
+  // console.log(nweetObj);
+  console.log("isOwner :", isOwner);
   const [editing, setEditing] = useState(false);
   const [newNweet, setNewNweet] = useState(nweetObj.text);
   const [NweetModify, setNweetModify] = useState(null);
 
+  const confirm = useConfirm();
   const onDeleteClick = async () => {
+    confirm({ description: `이 항목을 삭제하실건가요?` })
+      .then(() => console.log("삭제하죠."))
+      .catch(() => console.log("Deletion cancelled."));
     setNweetModify(null);
-    const ok = window.confirm("이 Nweet을 삭제 할건가요?");
-    console.log(ok);
-    if (ok) {
-      await deleteDoc(doc(dbService, `nweets/${nweetObj.id}`), {});
-      if (nweetObj.attachmentUrl) {
-        await deleteObject(ref(storageService, nweetObj.attachmentUrl));
-      }
+    // const ok = window.confirm("이 Nweet을 삭제 할건가요?");
+
+    // console.log(ok);
+    // if (ok) {
+    await deleteDoc(doc(dbService, `nweets/${nweetObj.id}`), {});
+    if (nweetObj.attachmentUrl) {
+      await deleteObject(ref(storageService, nweetObj.attachmentUrl));
     }
+    // }
   };
   const toggleEditing = () => setEditing((prev) => !prev);
   const onSubmit = async (event) => {
@@ -154,7 +161,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
               )}
             </>
           }
-          title={nweetObj.creatorId}
+          title={nweetObj.Nickname}
           titleTypographyProps={{
             fontSize: "17px",
           }}

@@ -32,7 +32,7 @@ function App() {
   };
   return (
     <Container>
-      <Box sx={{ height: "100vh", minHeight: "550px" }}>
+      <Box sx={{ height: "100%", minHeight: "550px" }}>
         {init ? (
           <Box sx={{ mt: 12 }}>
             <AppRouter

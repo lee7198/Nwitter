@@ -66,6 +66,7 @@ const Navigation = ({ userObj }) => (
                       ? userObj.displayName
                       : userObj.displayName.substring(0, 6) + "..."
                     : "User"}
+                  {console.log(userObj)}
                 </Button>
               </Grid>
             </Box>
