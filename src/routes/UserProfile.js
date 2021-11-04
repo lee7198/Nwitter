@@ -178,5 +178,3 @@ export default ({ refreshUser, userObj }) => {
     </>
   );
 };
-
-// export default Profile;

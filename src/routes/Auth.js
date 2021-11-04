@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { authService } from "fbase";
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
   GoogleAuthProvider,
   GithubAuthProvider,
   signInWithPopup,
@@ -24,7 +22,7 @@ const Auth = () => {
       provider = new GithubAuthProvider();
     }
     const data = await signInWithPopup(authService, provider);
-    console.log(data);
+    // console.log(data);
   };
   return (
     <Container>

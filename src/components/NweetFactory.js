@@ -7,9 +7,10 @@ import { TextField, Grid } from "@mui/material";
 import { Button, IconButton } from "@material-ui/core";
 import { addDoc, collection } from "firebase/firestore";
 import { Box } from "@mui/system";
+import Snackbar from "@mui/material/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
 
-const NweetFactory = ({ userObj }) => {
+const NweetFactory = ({ userObj, snackbar }) => {
   const [nweet, setNweet] = useState("");
   const [attachment, setAttachment] = useState("");
 
@@ -34,12 +35,13 @@ const NweetFactory = ({ userObj }) => {
       creatorId: userObj.uid,
       Nickname: userObj.displayName,
       attachmentUrl,
+      creatorImg: userObj.photoURL,
     };
 
     try {
       const docRef = await addDoc(collection(dbService, "nweets"), nweetObj);
       console.log("Document written with ID: ", docRef.id);
-      // SnackHandleClick();
+      SnackHandleClick();
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -66,93 +68,133 @@ const NweetFactory = ({ userObj }) => {
   };
   const onClearAttachment = () => setAttachment("");
 
-  return (
-    <Box component="form" onSubmit={onSubmit}>
-      <TextField
-        value={nweet}
-        label="nweet 쓰기"
-        multiline
-        rows={4}
-        placeholder="무슨일이야?"
-        onChange={onChange}
-        fullWidth
-        inputProps={{
-          maxLength: 20,
-        }}
-        required
-      />
-      <Grid
-        py="1"
-        container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="flex-end"
-        item
-        sx={{
-          my: 2,
-        }}
+  // 스낵바
+  const [open, setOpenSnack] = React.useState(false);
+  const [snackPack, setSnackPack] = React.useState([]);
+
+  const SnackHandleClick = () => {
+    setOpenSnack(true);
+  };
+
+  const SnackHandleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnack(false);
+  };
+  const action = (
+    <React.Fragment>
+      {/* <Button color="secondary" size="small" onClick={SnackHandleClose}>
+        UNDO
+      </Button> */}
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={SnackHandleClose}
       >
-        <div
-          style={{
-            height: "60px",
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
+
+  return (
+    <>
+      <Box component="form" onSubmit={onSubmit}>
+        <TextField
+          value={nweet}
+          label="nweet 쓰기"
+          multiline
+          rows={4}
+          placeholder="무슨일이야?"
+          onChange={onChange}
+          fullWidth
+          inputProps={{
+            maxLength: 20,
+          }}
+          required
+        />
+        <Grid
+          py="1"
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-end"
+          item
+          sx={{
+            my: 2,
           }}
         >
-          {attachment ? (
-            <>
-              <img
-                src={
-                  attachment
-                    ? attachment
-                    : "https://firebasestorage.googleapis.com/v0/b/nwitter-a4d3b.appspot.com/o/default_image.png?alt=media&token=d33ee8b0-a5ed-4876-9fbc-65282d55f00b"
-                }
-                width="60px"
-                height="60px"
+          <div
+            style={{
+              height: "60px",
+            }}
+          >
+            {attachment ? (
+              <>
+                <img
+                  src={
+                    attachment
+                      ? attachment
+                      : "https://firebasestorage.googleapis.com/v0/b/nwitter-a4d3b.appspot.com/o/default_image.png?alt=media&token=d33ee8b0-a5ed-4876-9fbc-65282d55f00b"
+                  }
+                  width="60px"
+                  height="60px"
+                  style={{
+                    backgroundColor: "#ddd",
+                    borderRadius: "4px",
+                  }}
+                />
+                <IconButton
+                  onClick={onClearAttachment}
+                  size="small"
+                  style={{
+                    position: "absolute",
+                    transform: "translate(-17px, -12px)",
+                    backgroundColor: "#fbfbfb",
+                    boxShadow: "1px 2px 4px #00000054",
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </>
+            ) : (
+              <Button
+                variant="contained"
+                component="label"
                 style={{
-                  backgroundColor: "#ddd",
-                  borderRadius: "4px",
-                }}
-              />
-              <IconButton
-                onClick={onClearAttachment}
-                size="small"
-                style={{
-                  position: "absolute",
-                  transform: "translate(-17px, -12px)",
                   backgroundColor: "#fbfbfb",
-                  boxShadow: "1px 2px 4px #00000054",
+                  width: "60px",
+                  height: "60px",
                 }}
               >
-                <CloseIcon />
-              </IconButton>
-            </>
-          ) : (
-            <Button
-              variant="contained"
-              component="label"
-              style={{
-                backgroundColor: "#fbfbfb",
-                width: "60px",
-                height: "60px",
-              }}
-            >
-              <AddPhotoAlternate
-                fontSize="large"
-                // style={{ color: "white" }}
-              />
-              <input
-                accept="image/*"
-                type="file"
-                onChange={onFileChange}
-                hidden
-              />
-            </Button>
-          )}
-        </div>
-        <Button type="submit" variant="contained" color="primary">
-          Nweet
-        </Button>
-      </Grid>
-    </Box>
+                <AddPhotoAlternate
+                  fontSize="large"
+                  // style={{ color: "white" }}
+                />
+                <input
+                  accept="image/*"
+                  type="file"
+                  onChange={onFileChange}
+                  hidden
+                />
+              </Button>
+            )}
+          </div>
+          <Button type="submit" variant="contained" color="primary">
+            Nweet
+          </Button>
+        </Grid>
+      </Box>
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={SnackHandleClose}
+        message="👍 성공적으로 작성되었습니다."
+        action={action}
+      />
+    </>
   );
 };
 

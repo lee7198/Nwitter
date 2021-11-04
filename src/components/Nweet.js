@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   CardContent,
   CardMedia,
@@ -19,10 +20,11 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { deleteObject, ref } from "@firebase/storage";
 import { storageService } from "../fbase";
 import { useConfirm } from "material-ui-confirm";
+import moment from "moment";
 
 const Nweet = ({ nweetObj, isOwner }) => {
-  // console.log(nweetObj);
-  console.log("isOwner :", isOwner);
+  console.log(nweetObj);
+  // console.log("isOwner :", isOwner);
   const [editing, setEditing] = useState(false);
   const [newNweet, setNewNweet] = useState(nweetObj.text);
   const [NweetModify, setNweetModify] = useState(null);
@@ -161,11 +163,16 @@ const Nweet = ({ nweetObj, isOwner }) => {
               )}
             </>
           }
-          title={nweetObj.Nickname}
+          avatar={
+            <Avatar aria-label="nweet" src={nweetObj.creatorImg}>
+              {nweetObj.Nickname.substr(0, 1)}
+            </Avatar>
+          }
+          title={nweetObj.Nickname ? nweetObj.Nickname : nweetObj.creatorId}
           titleTypographyProps={{
             fontSize: "17px",
           }}
-          subheader={nweetObj.createdAt}
+          subheader={moment(nweetObj.createdAt).format("YYYY.MM.DD HH:mm")}
           subheaderTypographyProps={{
             fontSize: "13px",
           }}
