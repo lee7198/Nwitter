@@ -3,6 +3,7 @@ import AppRouter from "components/Router";
 import { authService } from "fbase";
 import { CircularProgress, Container, Grid } from "@material-ui/core";
 import { Box } from "@mui/system";
+import "./style.css";
 
 function App() {
   const [init, setInit] = useState(false);
