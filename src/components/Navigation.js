@@ -23,7 +23,7 @@ const Navigation = ({ userObj }) => (
           alignItems="center"
         >
           <Grid item xs>
-            <IconButton color="inherit" aria-label="home" href="/Nwitter/">
+            <IconButton color="inherit" aria-label="home" href="/Nwitter">
               <HomeRoundedIcon />
             </IconButton>
           </Grid>
