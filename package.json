@@ -1,6 +1,6 @@
 {
   "name": "nwitter",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.4.1",
@@ -47,5 +47,5 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://lee7198.github.io/nwitter"
+  "homepage": "https://lee7198.github.io/Nwitter"
 }
