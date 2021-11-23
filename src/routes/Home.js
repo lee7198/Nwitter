@@ -29,6 +29,7 @@ const Home = ({ userObj }) => {
           <Box minHeight="50px">
             <Nweet
               key={nweet.id}
+              userObj={userObj}
               nweetObj={nweet}
               isOwner={nweet.creatorId === userObj.uid}
             />

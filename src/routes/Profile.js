@@ -166,6 +166,7 @@ export default ({ refreshUser, userObj }) => {
             {nweet.creatorId === userObj.uid ? (
               <Nweet
                 key={nweet.id}
+                userObj={userObj}
                 nweetObj={nweet}
                 isOwner={nweet.creatorId === userObj.uid}
               />

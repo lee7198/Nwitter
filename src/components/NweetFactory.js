@@ -36,6 +36,7 @@ const NweetFactory = ({ userObj, snackbar }) => {
       Nickname: userObj.displayName,
       attachmentUrl,
       creatorImg: userObj.photoURL,
+      liker_ID: [],
     };
 
     try {
@@ -124,12 +125,15 @@ const NweetFactory = ({ userObj, snackbar }) => {
           item
           sx={{
             my: 2,
+            height: "70px",
           }}
         >
           <div
-            style={{
-              height: "60px",
-            }}
+            style={
+              {
+                // height: "60px",
+              }
+            }
           >
             {attachment ? (
               <>
@@ -160,19 +164,28 @@ const NweetFactory = ({ userObj, snackbar }) => {
                 </IconButton>
               </>
             ) : (
-              <Button
-                variant="contained"
-                component="label"
-                style={{
-                  backgroundColor: "#fbfbfb",
-                  width: "60px",
-                  height: "60px",
-                }}
-              >
-                <AddPhotoAlternate
-                  fontSize="large"
-                  // style={{ color: "white" }}
-                />
+              // <Button
+              //   variant="contained"
+              //   component="label"
+              //   style={{
+              //     backgroundColor: "#fbfbfb",
+              //     width: "60px",
+              //     height: "60px",
+              //   }}
+              // >
+              //   <AddPhotoAlternate
+              //     fontSize="large"
+              //     // style={{ color: "white" }}
+              //   />
+              //   <input
+              //     accept="image/*"
+              //     type="file"
+              //     onChange={onFileChange}
+              //     hidden
+              //   />
+              // </Button>
+              <Button variant="contained" component="label">
+                Add Photo
                 <input
                   accept="image/*"
                   type="file"

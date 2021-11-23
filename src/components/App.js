@@ -4,6 +4,7 @@ import { authService } from "fbase";
 import { CircularProgress, Container, Grid } from "@material-ui/core";
 import { Box } from "@mui/system";
 import "./style.css";
+// import { StyleSheet, SafeAreaView } from "react-native";
 
 function App() {
   const [init, setInit] = useState(false);
@@ -33,7 +34,16 @@ function App() {
       // updateProfile: (args) => user.updateProfile(args),
     });
   };
+
+  // const styles = StyleSheet.create({
+  //   container: {
+  //     flex: 1,
+  //     backgroundColor: "#f00",
+  //   },
+  // });
+
   return (
+    // <SafeAreaView style={styles.container}>
     <Container>
       <Box sx={{ height: "100%", minHeight: "550px" }}>
         {init ? (
@@ -82,6 +92,7 @@ function App() {
         </Grid>
       </Box> */}
     </Container>
+    // </SafeAreaView>
   );
 }
 

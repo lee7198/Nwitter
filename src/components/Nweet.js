@@ -12,19 +12,31 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import { Card, CardHeader, Stack } from "@mui/material";
+import { Card, CardActions, CardHeader, Stack } from "@mui/material";
 import { dbService } from "fbase";
-import { doc, deleteDoc, updateDoc } from "firebase/firestore";
+import {
+  doc,
+  deleteDoc,
+  updateDoc,
+  addDoc,
+  collection,
+  arrayUnion,
+  arrayRemove,
+  deleteField,
+} from "firebase/firestore";
+// import { getDatabase, onChildAdded } from "firebase/database";
 import React, { useState } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { deleteObject, ref } from "@firebase/storage";
 import { storageService } from "../fbase";
 import { useConfirm } from "material-ui-confirm";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import moment from "moment";
+import { NotesRounded } from "@mui/icons-material";
+import { typography } from "@mui/system";
 
-const Nweet = ({ nweetObj, isOwner }) => {
-  console.log(nweetObj);
-  // console.log("isOwner :", isOwner);
+const Nweet = ({ nweetObj, isOwner, userObj }) => {
   const [editing, setEditing] = useState(false);
   const [newNweet, setNewNweet] = useState(nweetObj.text);
   const [NweetModify, setNweetModify] = useState(null);
@@ -46,6 +58,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
     }
   };
   const toggleEditing = () => setEditing((prev) => !prev);
+
   const onSubmit = async (event) => {
     event.preventDefault();
     await updateDoc(doc(dbService, `nweets/${nweetObj.id}`), {
@@ -67,13 +80,41 @@ const Nweet = ({ nweetObj, isOwner }) => {
     setNweetModify(null);
   };
   const ModalHandleClose = () => ModalSetOpen(false);
-
   const ModifyOpener = Boolean(NweetModify);
   const ModifyOpen = (event) => {
     setNweetModify(event.currentTarget);
   };
   const ModifyClose = () => {
     setNweetModify(null);
+  };
+
+  const LikeUpper = async (event) => {
+    event.preventDefault();
+    console.log("Like!!!");
+    await updateDoc(doc(dbService, `nweets/${nweetObj.id}`), {
+      liker_ID: arrayUnion(userObj.uid),
+    });
+  };
+
+  var Favorite_own = false;
+  var Favorite = false;
+  if (nweetObj.liker_ID) {
+    for (let i = 0; i < nweetObj.liker_ID.length; i++) {
+      if (nweetObj.liker_ID[i] == userObj.uid) {
+        Favorite_own = true;
+      }
+    }
+    if (nweetObj.liker_ID.length > 0) {
+      Favorite = true;
+    }
+  }
+
+  const LikeCanceler = async (event) => {
+    console.log("Like Cancel!!");
+    event.preventDefault();
+    await updateDoc(doc(dbService, `nweets/${nweetObj.id}`), {
+      liker_ID: arrayRemove(userObj.uid),
+    });
   };
 
   return (
@@ -135,7 +176,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
           </Modal>
         )}
       </>
-      <Card variant="outlined" sx={{ my: 4 }}>
+      <Card variant="outlined" sx={{ my: 4, borderRadius: "15px" }}>
         <CardHeader
           // avatar={nweetObj.id}
           action={
@@ -189,6 +230,30 @@ const Nweet = ({ nweetObj, isOwner }) => {
         <CardContent>
           <Typography>{nweetObj.text}</Typography>
         </CardContent>
+        <CardActions>
+          {Favorite_own ? (
+            <>
+              <IconButton onClick={LikeCanceler}>
+                <FavoriteIcon
+                  style={{
+                    color: "rgb(237, 73, 86)",
+                  }}
+                />
+              </IconButton>
+            </>
+          ) : (
+            <IconButton onClick={LikeUpper}>
+              <FavoriteBorderIcon />
+            </IconButton>
+          )}
+          {Favorite ? (
+            <Typography variant="caption">
+              좋아요 {nweetObj.liker_ID ? nweetObj.liker_ID.length : "0"}개
+            </Typography>
+          ) : (
+            <></>
+          )}
+        </CardActions>
       </Card>
     </div>
   );
