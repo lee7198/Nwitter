@@ -184,8 +184,12 @@ const NweetFactory = ({ userObj, snackbar }) => {
               //     hidden
               //   />
               // </Button>
-              <Button variant="contained" component="label">
-                Add Photo
+              <Button
+                variant="contained"
+                component="label"
+                endIcon={<AddPhotoAlternate />}
+              >
+                Photo
                 <input
                   accept="image/*"
                   type="file"

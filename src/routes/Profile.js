@@ -160,9 +160,9 @@ export default ({ refreshUser, userObj }) => {
       <Box sx={{ pt: 3, pb: 2, textAlign: "center" }}>
         <Typography variant="h3">My nweets</Typography>
       </Box>
-      {nweets.map((nweet) => (
-        <>
-          <Box minHeight="50px">
+      <Box minHeight="50px">
+        {nweets.map((nweet) => (
+          <>
             {nweet.creatorId === userObj.uid ? (
               <Nweet
                 key={nweet.id}
@@ -173,9 +173,9 @@ export default ({ refreshUser, userObj }) => {
             ) : (
               ""
             )}
-          </Box>
-        </>
-      ))}
+          </>
+        ))}
+      </Box>
     </>
   );
 };

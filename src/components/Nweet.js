@@ -12,6 +12,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import { Card, CardActions, CardHeader, Stack } from "@mui/material";
 import { dbService } from "fbase";
 import {
@@ -33,8 +34,7 @@ import { useConfirm } from "material-ui-confirm";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import moment from "moment";
-import { NotesRounded } from "@mui/icons-material";
-import { typography } from "@mui/system";
+// import { AddLinks } form 'react-link-text';
 
 const Nweet = ({ nweetObj, isOwner, userObj }) => {
   const [editing, setEditing] = useState(false);
@@ -209,7 +209,24 @@ const Nweet = ({ nweetObj, isOwner, userObj }) => {
               {nweetObj.Nickname.substr(0, 1)}
             </Avatar>
           }
-          title={nweetObj.Nickname ? nweetObj.Nickname : nweetObj.creatorId}
+          title={
+            nweetObj.Nickname ? (
+              <Link
+                style={{ color: "#000", textDecoration: "none" }}
+                to={{
+                  pathname: `/UserProfile/${nweetObj.creatorId}`,
+                  state: {
+                    nweetObj,
+                    userObj,
+                  },
+                }}
+              >
+                {nweetObj.Nickname}
+              </Link>
+            ) : (
+              nweetObj.creatorId
+            )
+          }
           titleTypographyProps={{
             fontSize: "17px",
           }}
