@@ -44,7 +44,7 @@ const UserProfile = ({ location, match }) => {
   return (
     <>
       <Box sx={{ pt: 3, pb: 2, textAlign: "center" }}>
-        <Typography variant="h3">{nweetObj.Nickname}의 Nweets</Typography>
+        <Typography variant="h3">{nweetObj.Nickname}의 Nweet</Typography>
       </Box>
       <Box minHeight="50px">
         {nweets.map((nweet) => (
