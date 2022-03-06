@@ -28,7 +28,7 @@ const Navigation = ({ userObj }) => (
             </IconButton>
           </Grid>
           <Grid item xs={6} justifyContent="center">
-            <Typography style={{ textAlign: "center" }}>NWITTER</Typography>
+            <Typography style={{ textAlign: "center" }}>NWITTER!</Typography>
           </Grid>
           <Grid item xs>
             <Box>
