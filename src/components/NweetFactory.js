@@ -137,7 +137,7 @@ const NweetFactory = ({ userObj, snackbar }) => {
           >
             {attachment ? (
               <>
-                <img
+                <image
                   src={
                     attachment
                       ? attachment

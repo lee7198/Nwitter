@@ -8,7 +8,7 @@ import "./style.css";
 
 function App() {
   const [init, setInit] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userObj, setUserObj] = useState(null);
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
@@ -31,19 +31,10 @@ function App() {
       displayName: user.displayName,
       uid: user.uid,
       photoURL: user.photoURL,
-      // updateProfile: (args) => user.updateProfile(args),
     });
   };
 
-  // const styles = StyleSheet.create({
-  //   container: {
-  //     flex: 1,
-  //     backgroundColor: "#f00",
-  //   },
-  // });
-
   return (
-    // <SafeAreaView style={styles.container}>
     <Container>
       <Box sx={{ height: "100%", minHeight: "550px" }}>
         {init ? (
@@ -69,30 +60,7 @@ function App() {
           </Grid>
         )}
       </Box>
-      {/* <Box
-        sx={{
-          height: "10%",
-          bgcolor: "#e9f3fd",
-          py: 1,
-          px: 1,
-          borderRadius: "15px",
-        }}
-      >
-        <Grid
-          container
-          direction="row"
-          alignItems="center"
-          justify="flex-start"
-        >
-          <Grid item>
-            <Box sx={{ fontWeight: "light" }}>
-              &copy; {new Date().getFullYear()} Nwitter
-            </Box>
-          </Grid>
-        </Grid>
-      </Box> */}
     </Container>
-    // </SafeAreaView>
   );
 }
 

@@ -1,13 +1,7 @@
 import React from "react";
 import AppBar from "@mui/material/AppBar";
 import { Box } from "@mui/system";
-import {
-  Avatar,
-  Button,
-  Container,
-  IconButton,
-  Typography,
-} from "@material-ui/core";
+import { Button, Container, IconButton, Typography } from "@material-ui/core";
 import Grid from "@mui/material/Grid";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -44,7 +38,7 @@ const Navigation = ({ userObj }) => (
                   style={{ color: "#fff" }}
                   endIcon={
                     userObj.photoURL ? (
-                      <img
+                      <image
                         src={userObj.photoURL}
                         // width="1em"
                         // height="1em"
