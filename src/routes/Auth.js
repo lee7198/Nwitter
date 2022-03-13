@@ -12,6 +12,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import AuthForm from "components/AuthForm";
+import { SafeAreaView } from "react-native";
 
 const Auth = () => {
   const onSocialClick = async (name) => {
@@ -25,46 +26,48 @@ const Auth = () => {
     // console.log(data);
   };
   return (
-    <Container>
-      <AuthForm />
-      <Box
-        sx={{
-          my: 2,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Grid width="100%" maxWidth="500px">
-          <Grid item sx={{ m: 1, my: 2 }}>
-            <Button
-              fullWidth
-              startIcon={<GoogleIcon />}
-              variant="contained"
-              onClick={() => {
-                onSocialClick("google");
-              }}
-              style={{ backgroundColor: "#fff", color: "#1976d2" }}
-            >
-              Google 계정으로 시작
-            </Button>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <Container>
+        <AuthForm />
+        <Box
+          sx={{
+            my: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Grid width="100%" maxWidth="500px">
+            <Grid item sx={{ m: 1, my: 2 }}>
+              <Button
+                fullWidth
+                startIcon={<GoogleIcon />}
+                variant="contained"
+                onClick={() => {
+                  onSocialClick("google");
+                }}
+                style={{ backgroundColor: "#fff", color: "#1976d2" }}
+              >
+                Google 계정으로 시작
+              </Button>
+            </Grid>
+            <Grid item sx={{ m: 1, my: 2 }}>
+              <Button
+                fullWidth
+                startIcon={<GitHubIcon />}
+                variant="contained"
+                onClick={() => {
+                  onSocialClick("github");
+                }}
+                style={{ backgroundColor: "#222", color: "#fff" }}
+              >
+                Github 계정으로 시작
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item sx={{ m: 1, my: 2 }}>
-            <Button
-              fullWidth
-              startIcon={<GitHubIcon />}
-              variant="contained"
-              onClick={() => {
-                onSocialClick("github");
-              }}
-              style={{ backgroundColor: "#222", color: "#fff" }}
-            >
-              Github 계정으로 시작
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
-    </Container>
+        </Box>
+      </Container>
+    </SafeAreaView>
   );
 };
 
