@@ -100,7 +100,7 @@ const Nweet = ({ nweetObj, isOwner, userObj }) => {
   var Favorite = false;
   if (nweetObj.liker_ID) {
     for (let i = 0; i < nweetObj.liker_ID.length; i++) {
-      if (nweetObj.liker_ID[i] == userObj.uid) {
+      if (nweetObj.liker_ID[i] === userObj.uid) {
         Favorite_own = true;
       }
     }
