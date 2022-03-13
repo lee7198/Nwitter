@@ -9,6 +9,8 @@ import Box from "@mui/material/Box";
 import { TextField } from "@mui/material";
 import { Button, Typography } from "@material-ui/core";
 import Alert from "@mui/material/Alert";
+import Undo from "@mui/icons-material/Undo";
+import Person from "@mui/icons-material/Person";
 
 const AuthForm = () => {
   const [email, setEmail] = useState("");
@@ -129,11 +131,36 @@ const AuthForm = () => {
           onClick={() => {
             toggleAccount();
           }}
+          startIcon={newAccount ? <Undo /> : <Person />}
         >
           {newAccount ? "로그인" : "계정 생성"}
         </Button>
       </Grid>
-      {error ? <Alert severity="error">{error}</Alert> : ""}
+      {error ? (
+        <Alert severity="error" sx={{ my: 3 }}>
+          {/* {error} */}
+          {(() => {
+            switch (error) {
+              case "Firebase: Error (auth/invalid-email).":
+                return "이메일 정보가 잘못되었거나 빈 항목이 있습니다..";
+              case "Firebase: Error (auth/internal-error).":
+                return "비밀번호를 입력하지 않았거나 빈 항목이 있습니다.";
+              case "Firebase: Error (auth/wrong-password).":
+                return "잘못된 이메일이나 비밀번호를 입력하셨습니다.";
+              case "Firebase: Error (auth/user-not-found).":
+                return "잘못된 이메일이나 비밀번호를 입력하셨습니다.";
+              case "Firebase: Password should be at least 6 characters (auth/weak-password).":
+                return "입력된 비밀번호가 너무 짧습니다. (6자리 이상 권장)";
+              case "Firebase: Error (auth/email-already-in-use).":
+                return "이미 사용중인 이메일 입니다.";
+              default:
+                return null;
+            }
+          })()}
+        </Alert>
+      ) : (
+        ""
+      )}
     </>
   );
 };

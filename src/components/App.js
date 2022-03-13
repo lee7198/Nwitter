@@ -61,7 +61,7 @@ function App() {
             direction="column"
             alignItems="center"
             justify="center"
-            style={{ minHeight: "100vh" }}
+            style={{ justifyContent: "center", minHeight: "100vh" }}
           >
             <Grid item xs={6}>
               <CircularProgress size={80}></CircularProgress>

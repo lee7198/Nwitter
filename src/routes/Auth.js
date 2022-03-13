@@ -40,10 +40,11 @@ const Auth = () => {
             <Button
               fullWidth
               startIcon={<GoogleIcon />}
-              variant="outlined"
+              variant="contained"
               onClick={() => {
                 onSocialClick("google");
               }}
+              style={{ backgroundColor: "#fff", color: "#1976d2" }}
             >
               Google 계정으로 시작
             </Button>

@@ -176,7 +176,7 @@ const Nweet = ({ nweetObj, isOwner, userObj }) => {
           </Modal>
         )}
       </>
-      <Card variant="outlined" sx={{ my: 4, borderRadius: "15px" }}>
+      <Card variant="outlined" sx={{ my: 4, borderRadius: "10px" }}>
         <CardHeader
           // avatar={nweetObj.id}
           action={
