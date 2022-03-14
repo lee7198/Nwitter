@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/components/style.css"],"names":[],"mappings":"AAAA,KACE,qBAAoC,CAEpC,iHAEF","file":"main.aee21aeb.chunk.css","sourcesContent":["body {\n  background-color: rgb(255, 255, 255);\n\n  padding: env(safe-area-inset-top) env(safe-area-inset-right)\n    env(safe-area-inset-bottom) env(safe-area-inset-left);\n}\n"]}
