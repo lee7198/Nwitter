@@ -4,7 +4,7 @@ import { authService } from "fbase";
 import { CircularProgress, Container, Grid } from "@material-ui/core";
 import { Box } from "@mui/system";
 import "./style.css";
-// import { StyleSheet, SafeAreaView } from "react-native";
+import { Helmet } from "react-helmet-async";
 
 function App() {
   const [init, setInit] = useState(false);
@@ -43,7 +43,6 @@ function App() {
   // });
 
   return (
-    // <SafeAreaView style={styles.container}>
     <Container>
       <Box sx={{ height: "100%", minHeight: "550px" }}>
         {init ? (
@@ -55,44 +54,26 @@ function App() {
             />
           </Box>
         ) : (
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justify="center"
-            style={{ justifyContent: "center", minHeight: "100vh" }}
-          >
-            <Grid item xs={6}>
-              <CircularProgress size={80}></CircularProgress>
+          <>
+            <Helmet>
+              <meta name="theme-color" content="#1976d2" />
+            </Helmet>
+            <Grid
+              container
+              spacing={0}
+              direction="column"
+              alignItems="center"
+              justify="center"
+              style={{ justifyContent: "center", minHeight: "100vh" }}
+            >
+              <Grid item xs={6}>
+                <CircularProgress size={80}></CircularProgress>
+              </Grid>
             </Grid>
-          </Grid>
+          </>
         )}
       </Box>
-      {/* <Box
-        sx={{
-          height: "10%",
-          bgcolor: "#e9f3fd",
-          py: 1,
-          px: 1,
-          borderRadius: "15px",
-        }}
-      >
-        <Grid
-          container
-          direction="row"
-          alignItems="center"
-          justify="flex-start"
-        >
-          <Grid item>
-            <Box sx={{ fontWeight: "light" }}>
-              &copy; {new Date().getFullYear()} Nwitter
-            </Box>
-          </Grid>
-        </Grid>
-      </Box> */}
     </Container>
-    // </SafeAreaView>
   );
 }
 
