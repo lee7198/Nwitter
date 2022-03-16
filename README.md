@@ -6,5 +6,5 @@ https://lee7198.github.io/Nwitter
 
 test account
 ----------
->test@test
->twst123
+>id : test@test   
+>pw : test123
