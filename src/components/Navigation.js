@@ -44,7 +44,7 @@ const Navigation = ({ userObj }) => (
                   style={{ color: "#fff" }}
                   endIcon={
                     userObj.photoURL ? (
-                      <image
+                      <img
                         src={userObj.photoURL}
                         // width="1em"
                         // height="1em"

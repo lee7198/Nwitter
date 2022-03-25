@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { Card, CardActions, CardHeader, Stack } from "@mui/material";
+import { Box, Card, CardActions, CardHeader, Stack } from "@mui/material";
 import { dbService } from "fbase";
 import {
   doc,
@@ -176,7 +176,7 @@ const Nweet = ({ nweetObj, isOwner, userObj }) => {
           </Modal>
         )}
       </>
-      <Card variant="outlined" sx={{ my: 4, borderRadius: "10px" }}>
+      <Card variant="outlined" sx={{ my: 4, borderRadius: "10px" }} xs={6}>
         <CardHeader
           // avatar={nweetObj.id}
           action={
@@ -235,14 +235,18 @@ const Nweet = ({ nweetObj, isOwner, userObj }) => {
             fontSize: "13px",
           }}
         />
-        {nweetObj.attachmentUrl && (
-          // <img src={} width="50px" height="50px" />
+        {nweetObj.attachmentUrl ? (
           <CardMedia
             component="img"
-            // height="256"
             height="256"
             image={nweetObj.attachmentUrl}
           />
+        ) : (
+          <Box
+            sx={{
+              height: 256,
+            }}
+          ></Box>
         )}
         <CardContent>
           <Typography>{nweetObj.text}</Typography>

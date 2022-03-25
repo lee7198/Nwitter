@@ -102,7 +102,7 @@ const NweetFactory = ({ userObj, snackbar }) => {
 
   return (
     <>
-      <Box component="form" onSubmit={onSubmit}>
+      <Box component="form" onSubmit={onSubmit} sx={{ px: 5 }}>
         <TextField
           value={nweet}
           label="nweet 쓰기"
@@ -137,7 +137,7 @@ const NweetFactory = ({ userObj, snackbar }) => {
           >
             {attachment ? (
               <>
-                <image
+                <img
                   src={
                     attachment
                       ? attachment
